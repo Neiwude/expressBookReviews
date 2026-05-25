@@ -53,5 +53,53 @@ public_users.get('/review/:isbn',function (req, res) {
   const isbn = req.params.isbn;
   return res.status(200).json(books[isbn].reviews);
 });
+const axios = require('axios');
+
+// Get all books using async/await
+public_users.get('/asyncbooks', async function (req, res) {
+  try {
+    const response = await axios.get('http://localhost:5000/');
+    return res.status(200).json(response.data);
+  } catch (error) {
+    return res.status(500).json({message: "Error retrieving books"});
+  }
+});
+
+// Search by ISBN using Promises
+public_users.get('/promise/isbn/:isbn', function (req, res) {
+  const isbn = req.params.isbn;
+
+  axios.get(`http://localhost:5000/isbn/${isbn}`)
+    .then(response => {
+      return res.status(200).json(response.data);
+    })
+    .catch(error => {
+      return res.status(500).json({message: "Error retrieving book"});
+    });
+});
+
+// Search by Author
+public_users.get('/promise/author/:author', async function (req, res) {
+  const author = req.params.author;
+
+  try {
+    const response = await axios.get(`http://localhost:5000/author/${author}`);
+    return res.status(200).json(response.data);
+  } catch (error) {
+    return res.status(500).json({message: "Error retrieving author books"});
+  }
+});
+
+// Search by Title
+public_users.get('/promise/title/:title', async function (req, res) {
+  const title = req.params.title;
+
+  try {
+    const response = await axios.get(`http://localhost:5000/title/${title}`);
+    return res.status(200).json(response.data);
+  } catch (error) {
+    return res.status(500).json({message: "Error retrieving title books"});
+  }
+});
 
 module.exports.general = public_users;
