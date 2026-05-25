@@ -44,7 +44,10 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
   books[isbn].reviews[username] = review;
 
-  return res.status(200).json({message: "Review successfully posted", reviews: books[isbn].reviews});
+ return res.status(200).json({
+  message: "Review added/updated successfully",
+  reviews: books[isbn].reviews
+});
 });
 regd_users.delete("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
